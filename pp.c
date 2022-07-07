@@ -5,15 +5,12 @@
 int main(){
     int j = 1 ;
     int k = 1 ;
-    int l = 0 ;
    for (int i = 1; i <= 40; i++)
    {
-        printf("%d %d\n",k,j);
- 
-        l = k + j;
-        j = k;
-        k = l;
-        l = 0;
+        printf("%d %d\n",j,k);
+          
+          j = j + k;
+          k = j - k;
        
    }
    

@@ -4,8 +4,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 int main(){
-    char a = 'a';
-    char b = 'a';
-    printf("%d",strcmp(&a,&b));
+    int a = 'a';
+    int b = 'a';
+    printf("%c",strcmp(&a,&b));
     return 0;
 }
