@@ -5,65 +5,34 @@
 
 struct Lin
 {
-    int a;
-    struct Lin *next;
-    struct Lin *back;
+    int value;
+    struct Lin * next;
 };
 
 
 int main(){
-    int i;
-    struct Lin *head = (struct Lin*)malloc(sizeof(struct Lin));
-    head = NULL;
-//     struct Lin *a = malloc(sizeof(struct Lin));
-//     struct Lin *b = malloc(sizeof(struct Lin));
-//     struct Lin *c = malloc(sizeof(struct Lin));
 
-//     head -> next = a;
-//     a -> a = 3;
-//     b -> a = 4;
-//     c -> a = 5;
+    int number;
 
-//     a -> next = c;
-//     c -> next = b;
-
-//    
-//             }
-
+    struct Lin * head = (struct Lin*)malloc(sizeof(struct Lin*));
+    struct Lin * cur;
+    printf("값 : ");
+    scanf("%d", &number);
+    head -> value = number;
+    cur = head;
     while(1){
-        struct Lin *some = (struct Lin*)malloc(sizeof(struct Lin));
-        scanf("%d",&i);
-        
-        some -> a = i;
-        
-        if (head == NULL)
-        {
-            head = some;
-
-        }else{
-
-           head -> next = some;
-            
-        
+        struct Lin* some = (struct Lin*)malloc(sizeof(struct Lin*));
+        printf("값 : ");
+        scanf("%d", &number);
+        some -> value = number;
+        cur -> next = some;
+        cur = some;
+        struct Lin * bingle = head;
+        while (bingle != NULL){
+            printf("%d",bingle -> value);
+            bingle = bingle -> next;
         }
-
-        struct Lin *bingle = head;
-
-        while (bingle != NULL)
-            {     
-                printf("%d",bingle->a);
-            
-                
-                bingle = bingle -> next;
-
-                if (bingle == NULL)
-                {
-                    bingle = some;
-                    printf("\n");
-                    break;
-                }
-                
-                
-            }
-}
+        printf("\n");
+       
+    }
 }
