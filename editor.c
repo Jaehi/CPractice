@@ -27,10 +27,11 @@ int main(){
     scanf("%s",first_data);
     scanf("%d",&count);
     struct Editor editor;
-    editor.head = NULL;
-    editor.tail = NULL;
+    editor.head = (struct Link * )malloc(sizeof(struct Link));
+    editor.tail = (struct Link * )malloc(sizeof(struct Link));
+    editor.head -> data = 'h';
+    editor.tail -> data = 't';
     editor.cur = NULL;
-
     length = strlen(first_data);
     for (int i = 0; i < length; i++)
     {
@@ -42,199 +43,134 @@ int main(){
         //head tail 연결
         if( i == 0 ){
 
-            editor.head = N;
+            editor.head -> next = N;
+            editor.tail -> prev = N;
             editor.cur = N;
-            editor.tail = N;
-            printf("&&& %c %c &&&\n",editor.head -> data,editor.cur -> data);
+            editor.cur -> prev = editor.head;
+            editor.cur -> next = editor.tail;
+            printf("&&& %c %c &&&\n",editor.head -> next -> data,editor.tail -> prev -> data);
 
         }else if(i == length -1){
-            editor.tail = N;
-            editor.tail -> prev = editor.cur;
-            editor.cur -> next = N;
-            printf("^^^ %c ^^^\n",editor.tail -> data);
-
-        }else{
-            
+            printf("마지막 인덱스 하나 전 데이터 : %c \n",editor.cur -> data);
+            editor.tail -> prev = N;
+            printf("[[[ %c ]]] \n",editor.tail -> prev -> data);
             N -> prev = editor.cur;
             editor.cur -> next = N;
             editor.cur = N;
-            printf("((( %c )))\n",editor.cur -> data);
+            editor.cur -> next = editor.tail;
+            printf("^^^ %c ^^^\n",editor.tail -> prev -> data);
 
+        }else{
+            editor.cur -> next = N;
+            editor.tail -> prev = N;
+            N -> next = editor.tail;
+            N -> prev = editor.cur;
+            editor.cur = N;
+            printf("((( %c )))\n",editor.cur -> data);
         }
-        
     }
     
-    editor.cur = NULL;
-    state = 2;
+    editor.cur = editor.tail -> prev;
+
+    printf("시작 전임 : %c\n",editor.cur -> data);
 
     for (int i = 0; i < count; i++)
     {
+        printf("order : \n");
         scanf(" %c",&order);
 
         switch (order)
         {
-        case 'L':
-            if (editor.cur == NULL){
-                
-                editor.cur = NULL;
-                state = 1;
-                break;
-
-            }else if(editor.cur -> prev == NULL)
+            case 'L':
+            if (editor.cur -> prev != NULL)
             {
-                editor.cur -> next = editor.head;
-                state = 1;
-                break;
+                editor.cur = editor.cur -> prev;
+                printf("현재 커서 위치 : %c \n",editor.cur -> data);
             }
-
-            editor.cur = editor.cur -> prev;
-            printf("현재 커서 위치 : %c\n", editor.cur -> data);
             break;
-
-        case 'D':
-            if (editor.cur == NULL)
+           
+            case 'D':
+            if (editor.cur -> next != editor.tail)
             {
-                break;
-
-            }else if(editor.cur -> next == NULL){
-                
-                editor.cur = NULL;
-                state = 2;
-                break;
+                editor.cur = editor.cur -> next;
+                printf("현재 커서 위치 : %c \n",editor.cur -> data);
             }
-            editor.cur = editor.cur -> next;
-            printf("현재 커서 위치 : %c\n", editor.cur -> data);
-
             break;
-
-        case 'B':
-            {struct Link * temp; 
-            if (editor.cur == NULL)
+            
+            case 'B':
             {
-                switch (state)
+                struct Link * temp; 
+
+                if (editor.cur == editor.head)
                 {
-                case 1:
-                    if (editor.head == NULL)
-                    {
-                        printf("===== \n");
-                        
-                    }else{
-                        printf("あ \n");
-                    }
+                    printf("B 왼쪽이없음 : %c \n",editor.cur -> data);
                     break;
-                case 2:
 
-                    if(editor.tail == NULL ){
-                        printf("b state 2 tail == NULL : %c\n",editor.cur -> data);
-                        break;
-                    }
-                    else if (editor.tail -> prev == NULL)
-                    {
-                        
-                        free(editor.tail);
-                        editor.tail = NULL;
-                        editor.head = NULL;
-                        printf("b state 2 tail -> prev == NULL : \n");
-                        break;
+                }else if(editor.cur -> next == editor.tail){
+                    editor.tail -> prev = editor.cur -> prev; 
+                    editor.cur -> prev -> next = editor.tail;
+                    temp = editor.cur -> prev;
+                    free(editor.cur);
+                    editor.cur = temp;
+                    printf("tail옆에 지움 : %c \n",editor.cur -> data);
+                    break;
 
-                    }else{
-                        editor.cur = editor.tail -> prev;
-                        free(editor.cur -> next);
-                        editor.cur -> next = NULL;
-                        editor.tail = editor.cur;
-                        printf(" b state 2  : %c \n",editor.tail -> data);
-                        editor.cur = NULL;
-                        break;
-                    }
-                default:
+                }else{
+                    editor.cur -> prev -> next = editor.cur -> next;
+                    editor.cur -> next -> prev = editor.cur -> prev;
+                    temp = editor.cur -> prev;
+                    free(editor.cur);
+                    editor.cur = temp;
+                    printf("%c 지움 : %c %c \n",editor.cur -> prev -> data ,editor.cur -> data, editor.cur -> next -> data);
                     break;
                 }
-
-                break;
-
-            }else if (editor.cur -> next == NULL)
-            {
-                editor.cur -> prev -> next = NULL;
-                editor.tail = editor.cur -> prev;
-                free(editor.cur);
-                editor.cur = editor.tail;
-                printf("b cur next NULL 아닐 때 : %c\n",editor.cur -> data);
+            
             }
 
-            editor.cur -> prev -> next = editor.cur -> next;
-            editor.cur -> next -> prev = editor.cur -> prev;
-            temp = editor.cur -> prev;
-            free(editor.cur);
-            editor.cur = temp;
-            printf("b dmdkr : %c\n", editor.cur -> data);
-            if(editor.cur -> prev == NULL){
-                editor.cur = NULL;
-            }
-            break;
+            case 'P':{
+                struct Link * plus = (struct Link * )malloc(sizeof(struct Link)); 
+                scanf(" %c",&aid);
+                plus -> data = aid;
 
-            }
-
-        case 'P':{
-            struct Link * plus = (struct Link * )malloc(sizeof(struct Link)); 
-            scanf(" %c",&aid);
-            if(editor.cur == NULL){
-                switch (state)
+                if (editor.cur == editor.head)
                 {
-                case 1:
-                    editor.cur = editor.head;
-                    plus -> data = aid;
-                    plus -> next = editor.cur;
-                    editor.cur -> prev = plus;
-                    editor.head = plus;
-                    editor.cur = editor.head;
-                    printf("P cur == NULL case 1 : %c\n",editor.head -> data);
-                    break;
-
-                case 2:
-                    editor.cur = editor.tail;
-                    plus -> data = aid;
-                    plus -> prev = editor.cur;
+                    editor.cur -> next -> prev = plus;
                     editor.cur -> next = plus;
-                    editor.tail = plus;
-                    editor.cur = NULL;
-                    printf("P cur == NULL case 2 : %c\n",editor.tail -> data);
+                    plus -> prev = editor.cur;
+                    plus -> next = editor.cur -> next;
+                    editor.cur = editor.cur -> next;
 
-                default:
-
+                    printf("%c 헤드일때 넣음 : %c  %c\n",editor.cur -> prev -> data,editor.cur -> data,editor.cur -> next -> data);
                     break;
 
                 }
-            }else if (editor.cur -> next == NULL)
-            {
-                plus -> data = aid;
-                editor.cur -> next = plus;
-                plus -> prev = editor.cur;
-                editor.tail = plus;
-                editor.cur = plus;
-                printf("P cur -> next == NULL : %c\n",editor.cur -> data);
+            
+                else{
+                    editor.cur -> next -> prev = plus;
+                    plus -> next = editor.cur -> next;
+                    editor.cur -> next = plus;
+                    plus -> prev = editor.cur;
+                    editor.cur = editor.cur -> next;
+                    printf("%c 넣음 : %c %c \n",editor.cur -> prev -> data ,editor.cur -> data, editor.cur -> next -> data);
+                    break;
+                }
             }
-            else{
-
-                plus -> data = aid;
-                editor.cur -> next -> prev = plus;
-                plus -> next = editor.cur -> next;
-                editor.cur -> next = plus;
-                plus -> prev = editor.cur;
-                editor.cur = plus;
-                printf("P NULL 아닐 때 : %c\n",editor.cur -> data);
-            }
-            break;
-            }
-        default:
-            break;
         }
     }
-        editor.cur = editor.head;
-    do
-    {
+
+    editor.cur = editor.head -> next;
+
+    while(1){
+        
+        if (editor.cur == editor.tail)
+        {
+            break;
+        }
         printf("%c ",editor.cur -> data);
         editor.cur = editor.cur -> next;
-    } while (editor.cur != NULL);
-
-    return 0;
+        
+        
+    }
+    
+        return 0;
 }
