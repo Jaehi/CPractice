@@ -15,13 +15,14 @@ int main(){
 
     struct Lin * head = (struct Lin*)malloc(sizeof(struct Lin*));
     struct Lin * temp;
-    struct Lin * prev;
+    struct Lin * previous;
     char state[10];
     struct Lin * pos = head;
     printf("값 : ");
     scanf("%d", &number);
     head -> value = number;
     temp = head;
+    
     while(1){
         struct Lin* some = (struct Lin*)malloc(sizeof(struct Lin*));
         
@@ -38,14 +39,12 @@ int main(){
         pos = head;
         
         printf("%d\n",temp -> value);
-        printf("추가");
-
+        printf("추가\n");
         while (pos != NULL){
-            printf("%d ",pos -> value);
-            //printf(" ----- %d -----\n",temp -> value);
+            printf("%d \n",pos -> value);
+            printf(" ----- %d -----\n",pos -> value);
             pos = pos -> next;
         }
-        
         printf("\n");
         }
         
@@ -53,43 +52,43 @@ int main(){
 
             if(head -> next != NULL){
                 if(head != NULL){
-            pos = head;
-            prev = NULL;
+                pos = head;
+                previous = NULL;
 
-            while(pos -> next != NULL ){
-                printf(" *** %d ***\n", pos -> next -> value);
-                prev = pos;
-                pos = pos -> next;
-            }
+                while(pos -> next != NULL ){
+                   // printf(" *** %d *** ", pos -> next -> value);
+                    previous = pos;
+                    pos = pos -> next;
+                   // printf("^^^ %d ^^^\n",previous -> value);
+                }
 
             printf(" 000 %d 000\n",pos -> value);
             
-            if (prev != NULL)
+            if (previous != NULL)
             {
-                prev -> next = NULL;
+                previous -> next = NULL;
             }
 
             if (head != NULL)
             {
+                printf(" @@@ %d @@@ \n",pos -> value);
                 free(pos);
                 printf("삭제 \n");
                 pos = head;
+                printf("**** %d ****\n",pos -> value);
             }
 
-            while (pos != NULL){
+            while (pos -> next != NULL){
             printf("%d ",pos -> value);
             pos = pos -> next;
+            printf("### %d ###\n",pos -> value);
             }
 
             }
             }else{
                 printf("값 : ");
                 scanf("%d", &number);
-
-                prev -> value = number;
-                temp -> next = prev;
-                temp = prev;
-                
+                pos -> value = number;
             }
            }
            }

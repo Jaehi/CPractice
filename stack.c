@@ -19,7 +19,6 @@ int main(){
         printf("push , pop : ");
         scanf("%s",state);
         
-
         if (strcmp(state,"push") == 0 )
         {
             printf("\nnumber : ");
@@ -27,16 +26,12 @@ int main(){
             number -> value = num;
             number -> prev = tail;
             tail = number;
-            
-            printf(" %d \n",tail -> value);
-
             temp = tail;
-            while (temp -> prev!= NULL){
+            do{
                 printf("%d ",temp -> value);
                 temp = temp -> prev;
-            }
+            }while (temp!= NULL);
             printf("\n");
-            
             
         }else if(strcmp(state,"pop")==0){
 
@@ -45,30 +40,30 @@ int main(){
                 temp = tail;
                 tail = temp -> prev;
                 free(temp);
-
                 temp = tail;
-                while (temp -> prev != NULL){
-                    printf("%d ",temp -> value);
-                    temp = temp -> prev;
+            do{
+                printf("%d ",temp -> value);
+                temp = temp -> prev;
+            }while (temp!= NULL);
+                printf("\n");
             }
-
-            printf("\n");
-             }
             else{
                 printf("\nnumber : ");
                 scanf("%d",&num);
+                tail = NULL;
                 number -> value = num;
                 number -> prev = tail;
                 tail = number;
+                temp = tail;
+                do{
+                    printf("%d ",temp -> value);
+                    temp = temp -> prev;
+                }while (temp!= NULL);
             }
             printf("\n");
-            
-
         }else{
             printf("다시 시도\n");
         }
-        
-        
 
     }
     

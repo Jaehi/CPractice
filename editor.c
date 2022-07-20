@@ -105,26 +105,19 @@ int main(){
                 {
                     printf("B 왼쪽이없음 : %c \n",editor.cur -> data);
                     break;
-
-                }else if(editor.cur -> next == editor.tail){
-                    editor.tail -> prev = editor.cur -> prev; 
-                    editor.cur -> prev -> next = editor.tail;
-                    temp = editor.cur -> prev;
-                    free(editor.cur);
-                    editor.cur = temp;
-                    printf("tail옆에 지움 : %c \n",editor.cur -> data);
-                    break;
-
-                }else{
+                }
+                else 
+                {
+                    temp = editor.cur;
                     editor.cur -> prev -> next = editor.cur -> next;
                     editor.cur -> next -> prev = editor.cur -> prev;
-                    temp = editor.cur -> prev;
-                    free(editor.cur);
-                    editor.cur = temp;
-                    printf("%c 지움 : %c %c \n",editor.cur -> prev -> data ,editor.cur -> data, editor.cur -> next -> data);
+                    editor.cur = editor.cur -> prev;
+                    free(temp);
+                    if (editor.cur != editor.head) {
+                        printf("지움 : %c %c %c \n",editor.cur -> prev -> data ,editor.cur -> data, editor.cur -> next -> data);
+                    }
                     break;
                 }
-            
             }
 
             case 'P':{
@@ -132,28 +125,14 @@ int main(){
                 scanf(" %c",&aid);
                 plus -> data = aid;
 
-                if (editor.cur == editor.head)
-                {
-                    editor.cur -> next -> prev = plus;
-                    editor.cur -> next = plus;
-                    plus -> prev = editor.cur;
-                    plus -> next = editor.cur -> next;
-                    editor.cur = editor.cur -> next;
-
-                    printf("%c 헤드일때 넣음 : %c  %c\n",editor.cur -> prev -> data,editor.cur -> data,editor.cur -> next -> data);
-                    break;
-
-                }
+                plus -> prev = editor.cur;
+                plus -> next = editor.cur -> next;
+                editor.cur -> next -> prev = plus;
+                editor.cur -> next = plus;
+                editor.cur = editor.cur -> next;
+                printf("%c 넣음 : %c %c \n",editor.cur -> prev -> data ,editor.cur -> data, editor.cur -> next -> data);
             
-                else{
-                    editor.cur -> next -> prev = plus;
-                    plus -> next = editor.cur -> next;
-                    editor.cur -> next = plus;
-                    plus -> prev = editor.cur;
-                    editor.cur = editor.cur -> next;
-                    printf("%c 넣음 : %c %c \n",editor.cur -> prev -> data ,editor.cur -> data, editor.cur -> next -> data);
-                    break;
-                }
+                break;
             }
         }
     }

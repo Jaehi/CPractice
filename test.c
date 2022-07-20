@@ -31,9 +31,7 @@ int main(){
             {       
                 strcpy(
                     seat[i][j],""
-                );
-            }
-        }
+                );}}
 
        while (1)
        {    
@@ -71,12 +69,7 @@ int main(){
                     exit(1);
                     
                 default:
-                    break;
-           }
-        
-       }
-       
-
-
+                    break;}}
+  
     return 0;
 }

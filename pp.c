@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#define _CRT_SECURE_NO_WARNINGS
 
 int main(){
     int j = 1 ;
@@ -11,8 +9,6 @@ int main(){
           
           j = j + k;
           k = j - k;
-       
    }
-   
     return 0;
 }
